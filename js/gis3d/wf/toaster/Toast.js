@@ -1,0 +1,41 @@
+define([
+    "dojo/_base/declare",
+    "dojo/_base/lang",
+    'gis3d/wf/toaster/ToastConf'
+], function(declare, lang, ToastConf){
+	var lastToastNumber = 0;
+	var Toast = declare("gis3d.wf.toaster.Toast", null, {
+		id : null,
+		message : null,
+		type : null,
+		sticky : false,
+		icon : null,
+		onClose : null,
+		onCloseClick : null,
+		// private
+		defaultIcons : null,
+		timerHandler : null,
+		constructor : function(args, guiClass) {
+			this.defaultIcons = {};
+			this.defaultIcons[ToastConf.TYPE.INFO] = 'fa-info-circle';
+			this.defaultIcons[ToastConf.TYPE.SUCCESS] = 'fa-check-circle';
+			this.defaultIcons[ToastConf.TYPE.WARNING] = 'fa-warning';
+			this.defaultIcons[ToastConf.TYPE.ERROR] = 'fa-minus-circle';
+
+			this.gui = new guiClass({
+				// TODO
+			});
+
+			declare.safeMixin(this, args);
+
+			this.gui.setCloseButtonCallback(lang.hitch(this, function() {
+				this.onCloseClick(this);
+			}));
+			// if ID is not defined
+			if (this.id == null || this.id == '') {
+				this.id = "gis3dToast_" + lastToastNumber++;
+			}
+		}
+    });
+	return Toast;
+});
