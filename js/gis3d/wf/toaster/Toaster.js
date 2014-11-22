@@ -1,13 +1,21 @@
 define([
     "dojo/_base/declare",
-	"gis3d/wf/toaster/Queue"
-], function(declare, Queue){
+	"gis3d/wf/toaster/Queue",
+	"dojo/topic",
+	"dojo/_base/lang"
+], function(declare, Queue, topic, lang){
 	var Toaster = declare("gis3d.wf.toaster.Toaster", null, {
 		queues : null,
 		defaultQueue: null,
+		messageEvent: 'wfToaster/postMessage',
+		eventSubscription: true,
 		constructor : function(args) {
 			this.queues = {};
 			declare.safeMixin(this, args);
+
+			if (this.eventSubscription) {
+				topic.subscribe(this.messageEvent, lang.hitch(this, this.onMessageEvent));
+			}
 		},
 		/*
 		*	options = {
@@ -50,6 +58,9 @@ define([
 			if (setAsDefault === true) {
 				this.defaultQueue = name;
 			}
+		},
+		onMessageEvent : function (msgOpts) {
+			this.postMessage(msgOpts);
 		}
     });
 	return Toaster;

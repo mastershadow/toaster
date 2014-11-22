@@ -29,7 +29,11 @@ define([
 
 			var toast = new Toast(msgOpts, this.guiClass);
 			toast.onCloseClick = lang.hitch(this, this.onToastCloseButton);
+			
+			// add to addToDom
+			toast.addToDom();
 
+			this.messages[toast.id] = toast;
 			if (msgOpts.sticky === true) {
 				// sticky!
 			} else {
@@ -38,22 +42,22 @@ define([
 				toast.timerHandler = setTimeout(lang.hitch(this, this.onToastTimeout, toast), duration);
 			}
 
-			this.messages[toast.id] = toast;
-
 			return toast.id;
 		},
 		onToastTimeout : function(t) {
 			this.clearToast(t);
 		},
 		onToastCloseButton : function(t) {
-			if (t.timerHandler != null) {
-				clearTimeout(t.timerHandler);
-				t.timerHandler = null;
-			}
 			this.clearToast(t);
 		},
 		clearToast : function(t) {
 			console.log(t);
+
+			if (t.timerHandler != null) {
+				clearTimeout(t.timerHandler);
+				t.timerHandler = null;
+			}
+
 			if (this.messages[t.id]) {
 				delete this.messages[t.id];
 			}

@@ -22,19 +22,28 @@ define([
 			this.defaultIcons[ToastConf.TYPE.WARNING] = 'fa-warning';
 			this.defaultIcons[ToastConf.TYPE.ERROR] = 'fa-minus-circle';
 
-			this.gui = new guiClass({
-				// TODO
-			});
-
 			declare.safeMixin(this, args);
+
+			// default fallback
+			this.type = this.type || ToastConf.TYPE.INFO;
+			this.icon = this.icon || this.defaultIcons[this.type];
+			
+			this.gui = new guiClass({
+				message : this.message,
+				icon : this.icon,
+				type : this.type
+			});
 
 			this.gui.setCloseButtonCallback(lang.hitch(this, function() {
 				this.onCloseClick(this);
 			}));
 			// if ID is not defined
 			if (this.id == null || this.id == '') {
-				this.id = "gis3dToast_" + lastToastNumber++;
+				this.id = "wfToast_" + lastToastNumber++;
 			}
+		},
+		addToDom : function(inPosition) {
+			return this.gui.addToDom(inPosition);
 		}
     });
 	return Toast;
