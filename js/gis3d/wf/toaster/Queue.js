@@ -29,8 +29,8 @@ define([
 
 			var toast = new Toast(msgOpts, this.guiClass);
 			toast.onCloseClick = lang.hitch(this, this.onToastCloseButton);
-			
-			// add to addToDom
+
+			// add to addToDom (offscreen)
 			toast.addToDom();
 
 			this.messages[toast.id] = toast;
@@ -61,6 +61,8 @@ define([
 			if (this.messages[t.id]) {
 				delete this.messages[t.id];
 			}
+
+			t.hide();
 
 			if (t.onClose != null) {
 				t.onClose(t.id);

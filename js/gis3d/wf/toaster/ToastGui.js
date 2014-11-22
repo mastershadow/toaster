@@ -12,6 +12,12 @@ define([
 		message : null,
 		icon : null,
 		type : null,
+		offScreenPosition : {
+			top: 'auto',
+			left: 'auto',
+			bottom : '-1000px',
+			right : '-1000px'
+		},
 		cssClasses: 'wfToast',
 		closeButtonCallback : null,
 		cssClassForType : function() {
@@ -25,14 +31,28 @@ define([
 		setCloseButtonCallback : function(closeCallback) {
 			this.closeButtonCallback = closeCallback;
 		},
-		init : function() {},
+		init : function() {
+			domStyle.set(this.domNode, {
+				width: this.width + "px",
+				height: this.height + "px"
+			});
+		},
 		addToDom : function(inPosition) {
 			if (this.domNode == null) {
 				throw new Error("ToastGui domNode is null");
 				return null;
 			}
+			var position = inPosition || this.offScreenPosition;
+			domStyle.set(this.domNode, position);
 			domConstruct.place(this.domNode, win.body());
 			return this.domNode;
 		},
+		hide : function() {
+			if (this.domNode == null) {
+				throw new Error("ToastGui domNode is null");
+				return null;
+			}
+			domConstruct.destroy(this.domNode);
+		}
     });
 });

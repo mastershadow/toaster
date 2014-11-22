@@ -10,17 +10,16 @@ define([
     return declare("gis3d.wf.toaster.ToastDefaultGui", ToastGui, {
 		width: 300,
 		height: 100,
+		iconSize : 'fa-4x',
 		init : function() {
 			this.domNode = domConstruct.toDom(this.prepareTemplate());
-			domStyle.set(this.domNode, {
-				width: this.width+"px",
-				height: this.height+"px"
-			});
-			console.log(this.domNode);
+			this.inherited(arguments);
 		},
 		prepareTemplate: function() {
 			var t = string.substitute(template, {
-				'cssClasses' : this.cssClasses
+				'cssClasses' : this.cssClasses,
+				'iconClasses' : [this.icon, this.iconSize].join(" "),
+				'message' : this.message
 			});
 			return t;
 		}

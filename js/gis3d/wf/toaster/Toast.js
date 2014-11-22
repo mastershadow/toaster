@@ -17,17 +17,17 @@ define([
 		timerHandler : null,
 		constructor : function(args, guiClass) {
 			this.defaultIcons = {};
-			this.defaultIcons[ToastConf.TYPE.INFO] = 'fa-info-circle';
-			this.defaultIcons[ToastConf.TYPE.SUCCESS] = 'fa-check-circle';
-			this.defaultIcons[ToastConf.TYPE.WARNING] = 'fa-warning';
-			this.defaultIcons[ToastConf.TYPE.ERROR] = 'fa-minus-circle';
+			this.defaultIcons[ToastConf.TYPE.INFO] = 'fa fa-info-circle';
+			this.defaultIcons[ToastConf.TYPE.SUCCESS] = 'fa fa-check-circle';
+			this.defaultIcons[ToastConf.TYPE.WARNING] = 'fa fa-warning';
+			this.defaultIcons[ToastConf.TYPE.ERROR] = 'fa fa-minus-circle';
 
 			declare.safeMixin(this, args);
 
 			// default fallback
 			this.type = this.type || ToastConf.TYPE.INFO;
 			this.icon = this.icon || this.defaultIcons[this.type];
-			
+
 			this.gui = new guiClass({
 				message : this.message,
 				icon : this.icon,
@@ -44,6 +44,9 @@ define([
 		},
 		addToDom : function(inPosition) {
 			return this.gui.addToDom(inPosition);
+		},
+		hide : function() {
+			this.gui.hide();
 		}
     });
 	return Toast;
