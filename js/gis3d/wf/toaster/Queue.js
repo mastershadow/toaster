@@ -3,18 +3,20 @@ define([
     'gis3d/wf/toaster/ToastConf',
     'gis3d/wf/toaster/Toast',
     'gis3d/wf/toaster/ToastDefaultGui',
-    'dojo/_base/lang'
-], function(declare, ToastConf, Toast, ToastDefaultGui, lang){
+    'dojo/_base/lang',
+    'dojo/fx',
+    'dojo/dom-style'
+], function(declare, ToastConf, Toast, ToastDefaultGui, lang, coreFx, domStyle){
     return declare("gis3d.wf.toaster.Queue", null, {
 		position : null,
 		direction : null,
-		transition : null,
 		messages : null,
 		guiClass : null,
+		boxMargin: 10,
+		itemMargin : 10,
 		constructor : function(args) {
 			this.position = ToastConf.POSITION.BR;
-			this.direction = ToastConf.DIRECTION.Y;
-			this.transition = ToastConf.TRANSITION.NONE;
+			this.direction = ToastConf.SLIDEDIRECTION.Y;
 			this.messages = {};
 			declare.safeMixin(this, args);
 
@@ -42,7 +44,17 @@ define([
 				toast.timerHandler = setTimeout(lang.hitch(this, this.onToastTimeout, toast), duration);
 			}
 
+			this.layout();
+
 			return toast.id;
+		},
+		layout : function() {
+			var n = 0;
+			for (var k in this.messages) {
+				var item = this.messages[k];
+				domStyle.set(item.gui.domNode, this.getFinalPosition(this.position, item, n));
+				n++;
+			}
 		},
 		onToastTimeout : function(t) {
 			this.clearToast(t);
@@ -67,6 +79,34 @@ define([
 			if (t.onClose != null) {
 				t.onClose(t.id);
 			}
+
+			this.layout();			
+		},
+		getFinalPosition : function(pos, item, n) {
+			var posObj = {
+				left: 'auto',
+				right: 'auto',
+				top: 'auto',
+				bottom: 'auto'
+			};
+
+			if (pos == ToastConf.POSITION.TL) {
+
+			} else if (pos == ToastConf.POSITION.BL) {
+			} else if (pos == ToastConf.POSITION.TR) {
+
+			} else if (pos == ToastConf.POSITION.BR) {
+				posObj.right = this.um(this.boxMargin);
+				posObj.bottom = this.um((item.gui.height + this.itemMargin) * n + this.boxMargin);
+			} else if (pos == ToastConf.POSITION.CC) {
+
+			}
+			console.log(pos, posObj);
+
+			return posObj;
+		},
+		um : function(d) {
+			return d + 'px';
 		}
     });
 });

@@ -5,22 +5,14 @@ define([
 	ToastConf.DURATION = 2000;
 	ToastConf.POSITION = {
 		'TL' : 'TL', 
-		'TC' : 'TC', 
 		'TR' : 'TR', 
-		'CL' : 'CL', 
 		'CC' : 'CC', 
-		'CR' : 'CR', 
 		'BL' : 'BL', 
-		'BC' : 'BC', 
 		'BR' : 'BR'
 	};
-	ToastConf.DIRECTION = {
+	ToastConf.SLIDEDIRECTION = {
 		'X' : 'X',
 		'Y' : 'Y'
-	};
-	ToastConf.TRANSITION = {
-		'NONE' : 'NONE',
-		'OPACITY' : 'OPACITY'
 	};
 	ToastConf.TYPE = {
 		'INFO' : 'INFO',
