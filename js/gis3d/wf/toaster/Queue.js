@@ -4,13 +4,14 @@ define([
     'gis3d/wf/toaster/Toast',
     'gis3d/wf/toaster/ToastDefaultGui',
     'dojo/_base/lang',
-    'dojo/fx',
+    'dojo/_base/fx',
     'dojo/dom-style'
-], function(declare, ToastConf, Toast, ToastDefaultGui, lang, coreFx, domStyle){
+], function(declare, ToastConf, Toast, ToastDefaultGui, lang, fx, domStyle){
     return declare("gis3d.wf.toaster.Queue", null, {
 		position : null,
 		direction : null,
 		messages : null,
+		messagesCount: 0,
 		guiClass : null,
 		boxMargin: 10,
 		itemMargin : 10,
@@ -32,10 +33,16 @@ define([
 			var toast = new Toast(msgOpts, this.guiClass);
 			toast.onCloseClick = lang.hitch(this, this.onToastCloseButton);
 
-			// add to addToDom (offscreen)
-			toast.addToDom();
-
 			this.messages[toast.id] = toast;
+			this.messagesCount++;
+
+			// add to addToDom (offscreen)
+			toast.addToDom();			
+
+			// set initial position	
+			domStyle.set(toast.gui.domNode, this.getInitialPosition(this.position, toast, this.messagesCount - 1, true));
+			domStyle.set(toast.gui.domNode, 'zIndex', 10000 - this.messagesCount);
+
 			if (msgOpts.sticky === true) {
 				// sticky!
 			} else {
@@ -52,7 +59,12 @@ define([
 			var n = 0;
 			for (var k in this.messages) {
 				var item = this.messages[k];
-				domStyle.set(item.gui.domNode, this.getFinalPosition(this.position, item, n));
+				var props = this.getFinalPosition(this.position, item, n);
+				fx.animateProperty({
+					node : item.gui.domNode,
+					properties : props,
+				}).play();
+				//domStyle.set(item.gui.domNode, this.getFinalPosition(this.position, item, n));
 				n++;
 			}
 		},
@@ -74,6 +86,8 @@ define([
 				delete this.messages[t.id];
 			}
 
+			this.messagesCount--;
+
 			t.hide();
 
 			if (t.onClose != null) {
@@ -82,7 +96,7 @@ define([
 
 			this.layout();			
 		},
-		getFinalPosition : function(pos, item, n) {
+		getInitialPosition : function(pos, item, n, um) {
 			var posObj = {
 				left: 'auto',
 				right: 'auto',
@@ -96,12 +110,42 @@ define([
 			} else if (pos == ToastConf.POSITION.TR) {
 
 			} else if (pos == ToastConf.POSITION.BR) {
-				posObj.right = this.um(this.boxMargin);
-				posObj.bottom = this.um((item.gui.height + this.itemMargin) * n + this.boxMargin);
+				posObj.right = this.boxMargin;
+				posObj.bottom = (item.gui.height + this.itemMargin) * (n - 1) + this.boxMargin;
+				if (um === true) {
+					posObj.right = this.um(posObj.right);
+					posObj.bottom = this.um(posObj.bottom);
+				}
 			} else if (pos == ToastConf.POSITION.CC) {
 
 			}
-			console.log(pos, posObj);
+
+			return posObj;
+		},
+		getFinalPosition : function(pos, item, n, um) {
+			var posObj = {
+				left: 'auto',
+				right: 'auto',
+				top: 'auto',
+				bottom: 'auto'
+			};
+
+			if (pos == ToastConf.POSITION.TL) {
+
+			} else if (pos == ToastConf.POSITION.BL) {
+			} else if (pos == ToastConf.POSITION.TR) {
+
+			} else if (pos == ToastConf.POSITION.BR) {
+				posObj.right = this.boxMargin;
+				posObj.bottom = (item.gui.height + this.itemMargin) * n + this.boxMargin;
+				if (um === true) {
+					posObj.right = this.um(posObj.right);
+					posObj.bottom = this.um(posObj.bottom);
+				}
+
+			} else if (pos == ToastConf.POSITION.CC) {
+
+			}
 
 			return posObj;
 		},
