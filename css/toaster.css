@@ -25,7 +25,7 @@
 
 .wf .wfToast .wfToastMessage {
 	padding: 0 20px 0 0;
-	margin-left: 77px;
+	margin-left: 85px;
 }
 .wf .wfToast .wfToastClose {
 	position: absolute;
@@ -44,5 +44,32 @@
 }
 .wf .wfToast.wfToastTypeInfo .wfToastIcon i {
 	color: rgba(255,255,255,0.8);
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+.wf .wfToast.wfToastTypeSuccess {
+	background-color: #009900;
+	color: rgba(255,255,255,0.9);
+}
+.wf .wfToast.wfToastTypeSuccess .wfToastIcon i {
+	color: rgba(255,255,255,0.6);
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+.wf .wfToast.wfToastTypeWarning {
+	background-color: #FFAA00;
+	color: rgba(255,255,255,0.9);
+}
+.wf .wfToast.wfToastTypeWarning .wfToastIcon i {
+	color: rgba(255,255,255,0.6);
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+}
+
+.wf .wfToast.wfToastTypeError {
+	background-color: #CC0000;
+	color: rgba(255,255,255,0.9);
+}
+.wf .wfToast.wfToastTypeError .wfToastIcon i {
+	color: rgba(255,200,200,0.7);
 	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
 }

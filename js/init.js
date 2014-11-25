@@ -9,15 +9,15 @@ require([
 ], function (dom, Toaster, ToastConf, topic, Button, domConstruct) {
 	var toaster = new Toaster();
 	toaster.addQueue('default', {
-		direction : ToastConf.SLIDEDIRECTION.X,
-		position : ToastConf.POSITION.CC
+		direction : ToastConf.SLIDEDIRECTION.Y,
+		position : ToastConf.POSITION.BR
 	}, true);
 	app.toaster = toaster;
 
 	var bInfo = new Button({
 		label: 'Info'
 	}, 'button-info').on('click', function() {
-		notifyViaMethod(ToastConf.TYPE.INFO, false);
+		notifyViaMethod(ToastConf.TYPE.ERROR, false);
 	});
 
 	new Button({
