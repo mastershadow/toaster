@@ -9,31 +9,39 @@ require([
 ], function (dom, Toaster, ToastConf, topic, Button, domConstruct) {
 	var toaster = new Toaster();
 	toaster.addQueue('default', {
+		direction : ToastConf.SLIDEDIRECTION.X,
+		position : ToastConf.POSITION.CC
 	}, true);
 	app.toaster = toaster;
 
 	var bInfo = new Button({
 		label: 'Info'
 	}, 'button-info').on('click', function() {
+		notifyViaMethod(ToastConf.TYPE.INFO, false);
+	});
+
+	new Button({
+		label: 'Info sticky'
+	}, 'button-info-sticky').on('click', function() {
 		notifyViaMethod(ToastConf.TYPE.INFO, true);
 	});
 
 	var prepareMsgOpts = function(type, sticky, id, queue) {
-		var s = sticky || false;
+		var st = sticky || false;
 		return {
 			queue : queue, 
 			id : id, 
-			duration: 3000, 
+			duration: 2000, 
 			type: type,
-			sticky : s,
+			sticky : st,
 			message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 		};
-	}
+	};
 
 	var notifyViaMethod = function(t, s, i, q) {
 		toaster.postMessage(prepareMsgOpts(t, s, i, q));
-	}
+	};
 
 
-	notifyViaMethod(ToastConf.TYPE.INFO, true);
+	notifyViaMethod(ToastConf.TYPE.INFO, false);
 });
