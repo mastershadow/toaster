@@ -7,12 +7,13 @@ define([
     'dojo/dom-construct',
     'dojo/dom-style',
     'dojo/query',
-    'dojo/_base/lang'
+    'dojo/_base/lang',
+    'dojo/dom-geometry'
 ], function(declare, ToastConf, ToastGui, template, string, 
-			domConstruct, domStyle, query, lang){
+			domConstruct, domStyle, query, lang, domGeometry){
     return declare("gis3d.wf.toaster.ToastDefaultGui", ToastGui, {
 		width: 320,
-		height: 180,
+		height: 'auto',
 		iconSize : 'fa-4x',
 		closeClasses : 'fa fa-close',
 		init : function() {
@@ -33,6 +34,9 @@ define([
 			if (this.closeButtonCallback != null) {
 				this.closeButtonCallback();
 			}
+		},
+		addToDom : function(inPosition) {
+			this.inherited(arguments);
 		}
     });
 });

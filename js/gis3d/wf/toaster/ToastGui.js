@@ -3,8 +3,9 @@ define([
     'gis3d/wf/toaster/ToastConf',
     'dojo/dom-construct',
     'dojo/dom-style',
-    'dojo/_base/window'
-], function(declare, ToastConf, domConstruct, domStyle, win){
+    'dojo/_base/window',
+    'dojo/dom-geometry'
+], function(declare, ToastConf, domConstruct, domStyle, win, domGeometry){
     return declare("gis3d.wf.toaster.ToastGui", null, {
 		width : 0,
 		height : 0,
@@ -34,7 +35,7 @@ define([
 		init : function() {
 			domStyle.set(this.domNode, {
 				width: this.width + "px",
-				height: this.height + "px"
+				height: this.height + (this.height !== 'auto' ? "px" : '')
 			});
 		},
 		addToDom : function(inPosition) {
@@ -45,6 +46,10 @@ define([
 			var position = inPosition || this.offScreenPosition;
 			domStyle.set(this.domNode, position);
 			domConstruct.place(this.domNode, win.body());
+
+			var mb = domGeometry.getMarginBox(this.domNode);
+			this.height = mb.h;
+			this.width = mb.w;
 			return this.domNode;
 		},
 		hide : function() {

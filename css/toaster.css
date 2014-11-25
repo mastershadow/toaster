@@ -1,3 +1,7 @@
+.wf .wfToast * {
+  box-sizing: border-box;
+}
+
 .wf .wfToast {
 	position: absolute;
 	z-index: 10000;
@@ -5,21 +9,23 @@
 	overflow: hidden;
 	font-family: HelveticaNeue, Helvetica, Arial, sans;
 	font-size: 0.85rem;
+	padding: 1.2em 0;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+	-webkit-user-select: none;
+  	-moz-user-select: none;   
+  	-ms-user-select: none;    
+  	-o-user-select: none;
+  	user-select: none;   
 }
 
 .wf .wfToast .wfToastIcon {
 	float: left;
-	height: 100%;
-	margin: 0 10px;
-}
-
-.wf .wfToast .wfToastIcon i {
-	color: rgba(255,255,255,0.8);
-	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+	margin: 0 1em 0 1.2em;
 }
 
 .wf .wfToast .wfToastMessage {
-	margin: 5px 20px 5px 0;
+	padding: 0 20px 0 0;
+	margin-left: 77px;
 }
 .wf .wfToast .wfToastClose {
 	position: absolute;
@@ -34,5 +40,9 @@
 
 .wf .wfToast.wfToastTypeInfo {
 	background-color: #99ccdd;
-	color: #333;
+	color: #444;
+}
+.wf .wfToast.wfToastTypeInfo .wfToastIcon i {
+	color: rgba(255,255,255,0.8);
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.1);
 }
