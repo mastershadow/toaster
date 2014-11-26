@@ -3,12 +3,14 @@ define([
     'gis3d/wf/toaster/ToastConf',
     'gis3d/wf/toaster/Toast',
     'gis3d/wf/toaster/ToastDefaultGui',
+    'gis3d/wf/toaster/position/Registry',
     'dojo/_base/lang',
     'dojo/_base/fx',
     'dojo/dom-style',
     'dojo/dom-geometry',
     'dojo/_base/window'
-], function(declare, ToastConf, Toast, ToastDefaultGui, lang, fx, domStyle, domGeometry, win){
+], function(declare, ToastConf, Toast, ToastDefaultGui, PositionRegistry,
+			lang, fx, domStyle, domGeometry, win){
     return declare("gis3d.wf.toaster.Queue", null, {
 		position : null,
 		direction : null,
@@ -109,190 +111,40 @@ define([
 			this.layout();			
 		},
 		getInitialPosition : function(pos, item, n, um, dir) {
-			var posObj = {
-				left: 'auto',
-				right: 'auto',
-				top: 'auto',
-				bottom: 'auto'
-			};
-
-			if (pos == ToastConf.POSITION.TL) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = this.boxMargin;
-					posObj.top = (item.gui.height + this.itemMargin) * (n - 1) + this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.top = this.um(posObj.top);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.left = (item.gui.width + this.itemMargin) * (n - 1) + this.boxMargin;
-					posObj.top = this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.top = this.um(posObj.top);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.BL) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = this.boxMargin;
-					posObj.bottom = (item.gui.height + this.itemMargin) * (n - 1) + this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.left = (item.gui.width + this.itemMargin) * (n - 1) + this.boxMargin;
-					posObj.bottom = this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.TR) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.right = this.boxMargin;
-					posObj.top = (item.gui.height + this.itemMargin) * (n - 1) + this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.top = this.um(posObj.top);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.right = (item.gui.width + this.itemMargin) * (n - 1) + this.boxMargin;
-					posObj.top = this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.top = this.um(posObj.top);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.BR) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.right = this.boxMargin;
-					posObj.bottom = (item.gui.height + this.itemMargin) * (n - 1) + this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.right = (item.gui.width + this.itemMargin) * (n - 1) + this.boxMargin;
-					posObj.bottom = this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.CC) {
-				var bBox = domGeometry.getMarginBox(win.body());
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = bBox.w / 2 - item.gui.width / 2;
-					posObj.bottom = -item.gui.height;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.bottom = bBox.h / 2 - item.gui.height / 2 - n * this.itemMargin;
-					posObj.right = -item.gui.width;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				}
-			}
-
-			return posObj;
+			var manager = PositionRegistry.get(pos);
+			return manager.startPosition({
+				obj : {
+					left: 'auto',
+					right: 'auto',
+					top: 'auto',
+					bottom: 'auto'
+				},
+				boxMargin: this.boxMargin,
+				itemMargin: this.itemMargin,
+				position: pos,
+				direction: dir,
+				item: item,
+				number: n,
+				addUm: um
+			});
 		},
 		getFinalPosition : function(pos, item, n, um, dir) {
-			var posObj = {
-				left: 'auto',
-				right: 'auto',
-				top: 'auto',
-				bottom: 'auto'
-			};
-
-			if (pos == ToastConf.POSITION.TL) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = this.boxMargin;
-					posObj.top = (item.gui.height + this.itemMargin) * n + this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.top = this.um(posObj.top);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.left = (item.gui.width + this.itemMargin) * n + this.boxMargin;
-					posObj.top = this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.top = this.um(posObj.top);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.BL) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = this.boxMargin;
-					posObj.bottom = (item.gui.height + this.itemMargin) * n + this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.left = (item.gui.width + this.itemMargin) * n + this.boxMargin;
-					posObj.bottom = this.boxMargin;
-					if (um === true) {
-						posObj.left = this.um(posObj.left);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.TR) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.right = this.boxMargin;
-					posObj.top = (item.gui.height + this.itemMargin) * n + this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.top = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.right = (item.gui.width + this.itemMargin) * n + this.boxMargin;
-					posObj.top = this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.top = this.um(posObj.bottom);
-					}
-				}
-			} else if (pos == ToastConf.POSITION.BR) {
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.right = this.boxMargin;
-					posObj.bottom = (item.gui.height + this.itemMargin) * n + this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.right = (item.gui.width + this.itemMargin) * n + this.boxMargin;
-					posObj.bottom = this.boxMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}					
-				}
-			} else if (pos == ToastConf.POSITION.CC) {
-				var bBox = domGeometry.getMarginBox(win.body());
-				if (dir == ToastConf.SLIDEDIRECTION.Y) {
-					posObj.left = bBox.w / 2 - item.gui.width / 2 + n * this.itemMargin;
-					posObj.bottom = bBox.h / 2 - item.gui.height / 2 - n * this.itemMargin;
-				} else if (dir == ToastConf.SLIDEDIRECTION.X) {
-					posObj.bottom = bBox.h / 2 - item.gui.height / 2 - n * this.itemMargin;
-					posObj.right = bBox.w / 2 - item.gui.width / 2 - n * this.itemMargin;
-					if (um === true) {
-						posObj.right = this.um(posObj.right);
-						posObj.bottom = this.um(posObj.bottom);
-					}
-				}
-				console.log(bBox,posObj);
-			}
-
-			return posObj;
-		},
-		um : function(d) {
-			return d + 'px';
+			var manager = PositionRegistry.get(pos);
+			return manager.endPosition({
+				obj : {
+					left: 'auto',
+					right: 'auto',
+					top: 'auto',
+					bottom: 'auto'
+				},
+				boxMargin: this.boxMargin,
+				itemMargin: this.itemMargin,
+				position: pos,
+				direction: dir,
+				item: item,
+				number: n,
+				addUm: um
+			});
 		}
     });
 });
