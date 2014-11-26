@@ -18,6 +18,21 @@
   	user-select: none;   
 }
 
+.wf .wfToastOverlay {
+	position: absolute;
+	z-index: 9000;
+	background-color: rgba(255,255,255,0.8);
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-user-select: none;
+  	-moz-user-select: none;   
+  	-ms-user-select: none;    
+  	-o-user-select: none;
+  	user-select: none;
+}
+
 .wf .wfToast .wfToastIcon {
 	float: left;
 	margin: 0 1em 0 1.2em;

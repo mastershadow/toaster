@@ -13,6 +13,8 @@ define([
 		message : null,
 		icon : null,
 		type : null,
+		modal : false,
+		overlayNode : null,
 		offScreenPosition : {
 			top: 'auto',
 			left: 'auto',
@@ -39,6 +41,13 @@ define([
 			});
 		},
 		addToDom : function(inPosition) {
+			if (this.modal) {
+				// add modal overlay
+				this.overlayNode = domConstruct.create("div", {
+					'class' : 'wfToastOverlay'
+				}, win.body());
+			}
+
 			if (this.domNode == null) {
 				throw new Error("ToastGui domNode is null");
 				return null;
@@ -56,6 +65,9 @@ define([
 			if (this.domNode == null) {
 				throw new Error("ToastGui domNode is null");
 				return null;
+			}
+			if (this.overlayNode != null) {
+				domConstruct.destroy(this.overlayNode);
 			}
 			domConstruct.destroy(this.domNode);
 		}

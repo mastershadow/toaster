@@ -26,7 +26,7 @@ require([
 		notifyViaMethod(ToastConf.TYPE.INFO, true);
 	});
 
-	var prepareMsgOpts = function(type, sticky, id, queue) {
+	var prepareMsgOpts = function(type, sticky, id, queue, modal) {
 		var st = sticky || false;
 		return {
 			queue : queue, 
@@ -34,6 +34,7 @@ require([
 			duration: 2000, 
 			type: type,
 			sticky : st,
+			modal: modal,
 			message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 		};
 	};

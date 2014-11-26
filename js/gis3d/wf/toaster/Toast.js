@@ -28,11 +28,15 @@ define([
 			this.type = this.type || ToastConf.TYPE.INFO;
 			this.icon = this.icon || this.defaultIcons[this.type];
 
-			this.gui = new guiClass({
+			var guiOpts = {
 				message : this.message,
 				icon : this.icon,
 				type : this.type
-			});
+			};
+			if (this.sticky === true && this.modal === true) {
+				guiOpts.modal = true;
+			}
+			this.gui = new guiClass(guiOpts);
 
 			this.gui.setCloseButtonCallback(lang.hitch(this, function() {
 				this.onCloseClick(this);

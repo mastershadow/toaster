@@ -2,8 +2,10 @@ define([
     "dojo/_base/declare",
 	"gis3d/wf/toaster/Queue",
 	"dojo/topic",
-	"dojo/_base/lang"
-], function(declare, Queue, topic, lang){
+	"dojo/_base/lang",
+	"dojo/_base/window",
+	"dojo/dom-construct"
+], function(declare, Queue, topic, lang, win, domConstruct){
 	var Toaster = declare("gis3d.wf.toaster.Toaster", null, {
 		queues : null,
 		defaultQueue: null,
@@ -23,6 +25,7 @@ define([
 		*		type : Toaster.TYPE, 
 	 	*		duration : 1000 (ms),
 	 	*		sticky : false,
+	 	*		modal : false,
 	 	*		id : 'id', // if the same id is still shown ignore message	 	
 	 	*		icon : 'fa-icon',
 	 	*		queue : 'queue-id',
