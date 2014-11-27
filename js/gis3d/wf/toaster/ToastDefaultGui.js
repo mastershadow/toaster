@@ -22,11 +22,12 @@ define([
 			this.inherited(arguments);
 		},
 		prepareTemplate: function() {
+			var m = lang.isArray(this.message) ? this.message[0] : this.message;
 			var t = string.substitute(template, {
 				'cssClasses' : this.cssClasses,
 				'iconClasses' : [this.icon, this.iconSize].join(" "),
 				'closeClasses' : this.closeClasses,
-				'message' : this.message
+				'message' : m
 			});
 			return t;
 		},

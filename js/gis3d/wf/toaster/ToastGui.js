@@ -29,6 +29,7 @@ define([
 		constructor : function(args) {
 			declare.safeMixin(this, args);
 			this.cssClasses = [this.cssClasses, this.cssClassForType()].join(" ");
+			console.log(this);
 			this.init();
 		},
 		setCloseButtonCallback : function(closeCallback) {

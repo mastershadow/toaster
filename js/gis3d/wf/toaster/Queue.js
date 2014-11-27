@@ -19,21 +19,21 @@ define([
 		guiClass : null,
 		boxMargin: 10,
 		itemMargin : 10,
+		zIndexBase : 10000,
 		constructor : function(args) {
 			this.position = ToastConf.POSITION.BR;
 			this.direction = ToastConf.SLIDEDIRECTION.Y;
 			this.messages = {};
 			declare.safeMixin(this, args);
-			this.guiClass = this.guiClass || ToastDefaultGui;
+			this.guiClass = this.guiClass || ToastDefaultGui;		
 		},
 		postMessage : function(msgOpts) {
-			console.log(msgOpts);
 			// collapse if same id
 			if (this.messages[msgOpts.id] != null) {
 				return;
 			}
 
-			var toast = new Toast(msgOpts, this.guiClass);
+			var toast = new Toast(msgOpts, msgOpts.guiClass || this.guiClass);
 			toast.onCloseClick = lang.hitch(this, this.onToastCloseButton);
 
 			this.messages[toast.id] = toast;
@@ -45,12 +45,11 @@ define([
 			// set initial position	
 			domStyle.set(toast.gui.domNode, this.getInitialPosition(this.position, toast, this.messagesCount - 1, true, this.direction));
 			if (this.position == ToastConf.POSITION.CC) {
-				domStyle.set(toast.gui.domNode, 'zIndex', 10000 + this.messagesCount);
+				domStyle.set(toast.gui.domNode, 'zIndex', this.zIndexBase + this.messagesCount);
 			} else {
-				domStyle.set(toast.gui.domNode, 'zIndex', 10000 - this.messagesCount);
+				domStyle.set(toast.gui.domNode, 'zIndex', this.zIndexBase - this.messagesCount);
 			}
 			
-
 			if (msgOpts.sticky === true) {
 				// sticky!
 			} else {

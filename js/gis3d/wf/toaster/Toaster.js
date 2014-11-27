@@ -21,7 +21,8 @@ define([
 		},
 		/*
 		*	options = {
-		*		message : 'MESSAGGIO',
+		*		message : 'MESSAGGIO' or ['Message A', 'Message B'],
+		*		guiClass : ToastGui subclass,
 		*		type : Toaster.TYPE, 
 	 	*		duration : 1000 (ms),
 	 	*		sticky : false,
